@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Sweeper</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="onInit()">
+    <h1>Mine Sweeper</h1>
+    <button class="btn easy" data-size="4" data-bombs="2"onclick="OnSetDifficulty(this)">Easy</button>
+    <button class="btn medium" data-size="8" data-bombs="12" onclick="OnSetDifficulty(this)">Medium</button>
+    <button class="btn hard" data-size="12" data-bombs="32" onclick="OnSetDifficulty(this)">Hard</button>
+    <p>Time: <span class="seconds">00</span>:
+        <span class="milli-seconds">000</span></p>
+    <p> <span class="lives">Lives: </span></p>
+    <p> <span class="bomb">Mines: </span></p>
+    <div onclick="onInit()"><span class="reset-btn">😀</span></div>
+    <div class="game-container">
+        <tbody class="board">
+
+        </tbody>
+    </div>
+    <script src="js/util.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cell.js"></script>
+</body>
+</html>
