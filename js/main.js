@@ -29,7 +29,7 @@ var eltime = document.querySelector('.time')
 var elLivesLeft = document.querySelector('.lives')
 var elmine = document.querySelector('.mines')
 var elresetbtn = document.querySelector('.reset-btn')
-let didRightClickMounted = false;
+let didRightClickMounted = false
 
 function onInit() {
     gCellsShown = 0;
@@ -49,12 +49,12 @@ function onInit() {
     resetTimer() // reset time
 
     if (!didRightClickMounted) {
-        didRightClickMounted = true;
+        didRightClickMounted = true
         elBoard.addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            if (gIsGameOver) return;
+            event.preventDefault()
+            if (gIsGameOver) return
 
-            var elCell = event.target;
+            var elCell = event.target
 
             cellMarked(elCell)
         })
@@ -84,12 +84,12 @@ function buildBoard(gLevel) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[i].length; j++) {
             if (board[i][j].isMine)
-                continue;
+                continue
 
             //get all non bomb negs as array
             const negs = getNegs(board, i, j)
 
-            board[i][j].minesAroundCount = negs.length;
+            board[i][j].minesAroundCount = negs.length
         }
     }
     return board
@@ -107,40 +107,40 @@ function getNegs(board, i, j, isBomb = true) {
         let counter = []
         if (i + 1 < board.length &&
             board[i + 1][j].isMine == isBomb)
-            counter.push(board[i + 1][j]);
+            counter.push(board[i + 1][j])
 
         if (i > 0 &&
             board[i - 1][j].isMine == isBomb)
-            counter.push(board[i - 1][j]);
+            counter.push(board[i - 1][j])
 
         if (j + 1 < board.length &&
             board[i][j + 1].isMine == isBomb)
-            counter.push(board[i][j + 1]);
+            counter.push(board[i][j + 1])
 
         if (j > 0 &&
             board[i][j - 1].isMine == isBomb)
-            counter.push(board[i][j - 1]);
+            counter.push(board[i][j - 1])
 
         if (i + 1 < board.length &&
             j + 1 < board.length &&
             board[i + 1][j + 1].isMine == isBomb)
-            counter.push(board[i + 1][j + 1]);
+            counter.push(board[i + 1][j + 1])
 
         if (i + 1 < board.length &&
             j > 0 &&
             board[i + 1][j - 1].isMine == isBomb)
-            counter.push(board[i + 1][j - 1]);
+            counter.push(board[i + 1][j - 1])
 
         if (i > 0 &&
             j + 1 < board.length &&
             board[i - 1][j + 1].isMine == isBomb)
-            counter.push(board[i - 1][j + 1]);
+            counter.push(board[i - 1][j + 1])
 
         if (i > 0 &&
             j > 0 &&
             board[i - 1][j - 1].isMine == isBomb)
-            counter.push(board[i - 1][j - 1]);
-        return counter;
+            counter.push(board[i - 1][j - 1])
+        return counter
     }
     catch (e) {
         throw `${i} ${j}`
@@ -169,9 +169,9 @@ function renderboard(board, selector) {
             }
 
             if (currCell.isShown) {
-                cellClass = "checked";
+                cellClass = "checked"
                 if (currCell.isMine)
-                    cellContent = BOMB;
+                    cellContent = BOMB
                 else
                     cellContent = currCell.minesAroundCount || "";
             }
@@ -226,9 +226,9 @@ function checkGameOver(isOnMine) {
 
     console.log(gBoard.length * gBoard[0].length - gCellsShown, gMinesOnBoard)
     if (gBoard.length * gBoard[0].length - gCellsShown === gMinesOnBoard) {
-        gIsGameOver = true;
+        gIsGameOver = true
         elresetbtn.innerText = WIN
-        WinAudio();
+        WinAudio()
     }
 
     if (gIsGameOver) {
@@ -259,7 +259,7 @@ function countFlaggedMines() {
 }
 
 function handleMineHit() {
-    gLivesLeft--;
+    gLivesLeft--
     BombAudio()
     updateLivesLeft(gLivesLeft)
     var elLivesLeft = document.querySelector('.lives')
