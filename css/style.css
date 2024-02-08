@@ -102,7 +102,7 @@ span.bomb {
 }
 
 .mine {
-    background-color: red;
+    background-color: red; 
 }
 
 .marked {
@@ -123,20 +123,4 @@ span.bomb {
 
 .color-4 {
     color: black
-}
-
-.color-5 {
-    color: brown
-}
-
-.color-6 {
-    color: orange
-}
-
-.color-7 {
-    color: purple
-}
-
-.color-8 {
-    color: red
 }

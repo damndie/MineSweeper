@@ -2,18 +2,10 @@
 
 
 function cellClicked(elCell) {
-
-    var elCellI = elCell.dataset.i
-    var elCellJ = elCell.dataset.j
-
-    if(!gFirstClickedCell){
-        gFirstClickedCell = {i:elCellI , j:elCellJ}
-        if(gBoard[gFirstClickedCell.i][gFirstClickedCell.j].isMine){
-            replaceMineLocation(gFirstClickedCell , gBoard)
-        }
-    }
-    if (gIsGameOver) return
-
+    if (gLivesLeft <= 0 || gIsGameOver)
+        return;
+    
+    //start the timer if not allready
     if (!gTimeId) {
         gTimeId = setInterval(() => {
             gTime++
@@ -21,63 +13,78 @@ function cellClicked(elCell) {
         }, 1000)
     }
 
-    if (gBoard[elCellI][elCellJ].isShown === true || gBoard[elCellI][elCellJ].isMarked === true) return
+    //getting current cell  that got clicked
+    const i = elCell.dataset.i,
+        j = elCell.dataset.j;
+    const cell = gBoard[i][j];
 
-    if (gBoard[elCellI][elCellJ].isMine === true) {
-        gBoard[elCellI][elCellJ].isShown = true
-        elCell.innerText = BOMB
-        checkGameOver(gBoard[elCellI][elCellJ].isMine)
-        return
+    if (cell.isMarked || cell.isShown)
+        return;
+
+    if (!gFirstClickedCell) {
+        gFirstClickedCell = cell;
+        if (cell.isMine) {
+            cell.isMine = false;
+            replaceMineLocation([i, j], gBoard)
+        }
+    }
+    cell.isShown = true;
+    if (!cell.isMine) {
+        expandShown(cell, ~~i, ~~j)
+        gCellsShown++;
     }
 
-    if (gBoard[elCellI][elCellJ].minesAroundCount !== 0) {
-        // model
-        gBoard[elCellI][elCellJ].isShown = true
-        // DOM
-        elCell.classList.add(`checked`)
-        elCell.classList.add(`color-${gBoard[elCellI][elCellJ].minesAroundCount}`)
-        elCell.innerText = gBoard[elCellI][elCellJ].minesAroundCount
-        return
-    }
-    if (gBoard[elCellI][elCellJ].minesAroundCount === 0) {
-        gBoard[elCellI][elCellJ].isShown = true
-        elCell.classList.add('checked')
-        elCell.innerText = ' '
-        expandShown(gBoard, elCell)
-    }
-    return
+    checkGameOver(cell.isMine)
+
+
+    renderboard(gBoard, '.board');
+
 }
 
-function expandShown(board, elCell) {
-    // get coords
-    var cellI = elCell.dataset.i
-    var cellJ = elCell.dataset.j
-    // go through all neigbors and run cellClicked recursivley if the neigbor is not a mine
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= board.length) continue
+function cellMarked(elCell) {
+    const i = elCell.dataset.i,
+        j = elCell.dataset.j;
+    const cell = gBoard[i][j];
 
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (i === cellI && j === cellJ) continue
-            if (j < 0 || j >= board[i].length) continue
-            var elCell = document.querySelector(`[data-i = '${i}'][data-j = '${j}']`)
-            if (!board[i][j].isMine && board[i][j].minesAroundCount <= 3) cellClicked(elCell)
-        }
+    if (cell.isMarked) {
+        cell.isMarked = false;
+        gFlagsOnBoardCount--;
+    }
+    else {
+        cell.isMarked = true;
+        gFlagsOnBoardCount++;
+    }
+
+    renderboard(gBoard, '.board');
+
+    checkGameOver(false)
+}
+
+function expandShown(elcell, i, j) {
+    const negs = getNegs(gBoard, i, j,false);
+    for (let i = 0; i < negs.length; i++) {
+        if (negs[i].isShown)
+            continue;
+
+        negs[i].isShown = true;
+        gCellsShown++;
     }
 }
 
 function replaceMineLocation(location, board) {
-    var coordI = location.i
-    var coordJ = location.j
-    for (var i = coordI - 1; i <= coordI + 1; i++) {
-        if (i < 0 || i >= board.length) continue
+    let didReplacment = false
+    for (var i = 0; i < board.length && !didReplacment; i++) {
+        for (var j = 0; j <= board[i].length && !didReplacment; j++) {
+            const currCell = board[i][j];
+            //if its the same location as the one that just clicked -ignore it
+            if (i === location[0] && j === location[1])
+                continue;
 
-        for (var j = coordJ - 1; j <= coordJ + 1; j++) {
-            if (i === coordI && j === coordJ) continue
-            if (j < 0 || j >= board[i].length) continue
-            var tempCell = gBoard[coordI][coordJ]
-            if (!board[i][j].isMine) {
-                gBoard[coordI][coordJ] = board[i][j]
-                board[i][j] = tempCell
+            if (!currCell.isMine) {
+                currCell.isMine = true;
+                const negs = getNegs(gBoard, i, j, false);
+                negs.forEach(c => c.minesAroundCount++);
+                didReplacment = true;
             }
         }
     }

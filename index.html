@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body onload="onInit()">
+<body  onload="onInit();">
     <div class="game">
     <h1>Mine Sweeper</h1>
     <div class="level">
     <button class="btn easy" data-size="4" data-mines="2" onclick="onSetDifficulty(this)">Easy</button>
-    <button class="btn medium" data-size="8" data-mines="12" onclick="onSetDifficulty(this)">Medium</button>
+    <button class="btn medium" data-size="8" data-mines="14" onclick="onSetDifficulty(this)">Medium</button>
     <button class="btn hard" data-size="12" data-mines="32" onclick="onSetDifficulty(this)">Hard</button>
     </div>
     <p>Time: <span class="time">0</p>
@@ -27,6 +27,7 @@
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
     <script src="js/cells.js"></script>
+    <footer> </footer>
 </body>
 
 </html>

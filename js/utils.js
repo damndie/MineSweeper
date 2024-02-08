@@ -19,24 +19,23 @@ function shuffleArray(array) {
     return array
 }
 
-// elBoard.addEventListener("contextmenu", (event) => {
-
-//     event.preventDefault()
-//     if (gIsGameOver) return
-//     var elCell = event.target
-
-//     cellMarked(elCell)
-// })
+function onSetDifficulty(level) {
+    var size = level.dataset.size
+    var mines = level.dataset.mines
+    gLevel.size = size
+    gLevel.mines = mines
+    onInit()
+}
 
 function BombAudio(){
-    var bomb = new Audio('bomb.mp3')
+    var bomb = new Audio('/sound/bomb.mp3')
     bomb.play()
 }
 function WinAudio(){
-    var win = new Audio('win.mp3')
+    var win = new Audio('/sound/win.mp3')
     win.play()
 }
 function LoseAudio(){
-    var lose = new Audio('lose.mp3')
+    var lose = new Audio('/sound/lose.mp3')
     lose.play()
 }
