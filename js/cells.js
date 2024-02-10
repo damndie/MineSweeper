@@ -24,7 +24,7 @@ function cellClicked(elCell) {
     if (!gFirstClickedCell) {
         gFirstClickedCell = cell
         if (cell.isMine) {
-            cell.isMine = false;
+            cell.isMine = false
             replaceMineLocation([i, j], gBoard)
         }
     }
@@ -64,10 +64,10 @@ function expandShown(elcell, i, j) {
     const negs = getNegs(gBoard, i, j,false)
     for (let i = 0; i < negs.length; i++) {
         if (negs[i].isShown)
-            continue;
+            continue
 
-        negs[i].isShown = true;
-        gCellsShown++;
+        negs[i].isShown = true
+        gCellsShown++
     }
 }
 
